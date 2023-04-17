@@ -10,15 +10,9 @@ import { addContact, deleteContacts } from 'Redux/contactsSlice.js';
 
 
 export function App() {
- 
-
-  const contacts = useSelector(state => state.contacts)
+ const contacts = useSelector(state => state.contacts)
   const filter = useSelector(state => state.filter)
   const dispatch = useDispatch()
-
-  
-
- 
 
   const createContact = data => {
     const toFind = data.name.toLowerCase();
