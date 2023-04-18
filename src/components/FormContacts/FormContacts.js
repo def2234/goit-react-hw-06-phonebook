@@ -1,11 +1,17 @@
-import PropTypes from 'prop-types';
 import { useState } from 'react';
 import { Form, Btn, Label, P, Input } from './FormContacts-styled';
+import { useDispatch, useSelector } from 'react-redux';
+import { addContact } from 'Redux/contactsSlice';
+import { nanoid } from 'nanoid';
 
-export function FormContacts({ createContact }) {
+export function FormContacts() {
   const [name, setName] = useState('');
   const [number, setNumber] = useState('');
   const dataContact = { name, number };
+
+  const contacts = useSelector(state => state.contacts);
+
+  const dispatch = useDispatch();
 
   const handleInputChange = ({ target }) => {
     console.log(target.name);
@@ -20,7 +26,20 @@ export function FormContacts({ createContact }) {
     if (name === '') {
       return;
     }
-    createContact(dataContact);
+
+    const toFind = name.toLowerCase();
+    if (contacts.find(item => item.name.toLowerCase() === toFind)) {
+      alert(`${name} is alrady in contacts`);
+      setName(contacts.name);
+      setNumber(contacts.number);
+    } else {
+      const createContact = { ...dataContact, id: nanoid() };
+      dispatch(addContact(createContact));
+      resetInput();
+    }
+  };
+
+  const resetInput = () => {
     setName('');
     setNumber('');
   };
@@ -64,9 +83,5 @@ export function FormContacts({ createContact }) {
     </Form>
   );
 }
-
-FormContacts.propTypes = {
-  createContact: PropTypes.func.isRequired,
-};
 
 export default FormContacts;

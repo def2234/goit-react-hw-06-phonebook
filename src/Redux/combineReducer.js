@@ -7,6 +7,7 @@ import { combineReducers } from '@reduxjs/toolkit';
 const persistConfig = {
   key: 'contacts',
   storage,
+  blacklist: ['filter'],
 };
 
 export const rootReducer = combineReducers({
